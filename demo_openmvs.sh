@@ -11,7 +11,7 @@ DATASET_PATH0=$1
 DATANAME=$2
 DATASET_PATH=$DATASET_PATH0/$DATANAME
 RESULT_PATH=$DATASET_PATH/result
-
+mkdir $RESULT_PATH
 
 echo "${DATASET_PATH##*/} 1">> process.txt
 
@@ -57,12 +57,12 @@ colmap model_converter \
 
 bin2txt_time=`date +"%Y-%m-%d %H:%M:%S"`
 
-# echo "${DATASET_PATH##*/} 2">> process.txt
-# echo "---colmap to mvsnet input---"
-# python3 colmap2mvsnet.py  --dense_folder $DATASET_PATH  --max_d 192  \
-# --list_folder data/lists/testing_list.txt
+echo "${DATASET_PATH##*/} 2">> process.txt
+echo "---colmap to mvsnet input---"
+python3 colmap2mvsnet.py  --dense_folder $DATASET_PATH  --max_d 192  \
+--list_folder data/lists/testing_list.txt
 
-# colmap2mvsnet_time=`date +"%Y-%m-%d %H:%M:%S"`
+colmap2mvsnet_time=`date +"%Y-%m-%d %H:%M:%S"`
 
 # echo "---cascade_pl---"
 # ########### need to change path: root_dir ckpt_path#############################
@@ -76,18 +76,18 @@ bin2txt_time=`date +"%Y-%m-%d %H:%M:%S"`
 echo "---OpenMVS---"
 cd $RESULT_PATH
 echo "---InterfaceCOLMAP---"
-/usr/local/bin/OpenMVS/InterfaceCOLMAP -i ../colmap -o scene.mvs 
+/usr/local/bin/OpenMVS/InterfaceCOLMAP -i ../colmap -o $RESULT_PATH/scene.mvs 
 
 InterfaceCOLMAP_time=`date +"%Y-%m-%d %H:%M:%S"`
 
 echo "---DensifyPointCloud---"
-/usr/local/bin/OpenMVS/DensifyPointCloud scene.mvs #--resolution-level 1 #-v 4
+/usr/local/bin/OpenMVS/DensifyPointCloud ./scene.mvs #--resolution-level 1 #-v 4
 
 DensifyPointCloud_time=`date +"%Y-%m-%d %H:%M:%S"`
 
 echo "${DATASET_PATH##*/} 3">> process.txt
 echo "---ReconstructMesh---"
-/usr/local/bin/OpenMVS/ReconstructMesh scene_dense.mvs --smooth 5  --d 2 
+/usr/local/bin/OpenMVS/ReconstructMesh ./scene_dense.mvs --smooth 5  --d 2 
 
 ReconstructMesh_time=`date +"%Y-%m-%d %H:%M:%S"`
 
