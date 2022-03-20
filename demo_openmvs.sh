@@ -1,4 +1,4 @@
-# author: Chen Min (minchen@stu.pku.edu.cn)
+# author: AaronYin
 
 # command: ./demo.sh example test0
 
