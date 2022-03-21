@@ -9,6 +9,7 @@ starttime=$(date +%Y-%m-%d\ %H:%M:%S)
 
 DATASET_PATH0=$1
 DATANAME=$2
+MATCHER_NAME=$3
 DATASET_PATH=$DATASET_PATH0/$DATANAME
 RESULT_PATH=$DATASET_PATH/result
 mkdir $RESULT_PATH
@@ -33,8 +34,8 @@ colmap feature_extractor \
 
 feature_extractor_time=`date +"%Y-%m-%d %H:%M:%S"`
 
-echo "---exhaustive_matcher---"
-colmap exhaustive_matcher \
+echo "---$MATCHER_NAME---"
+colmap $MATCHER_NAME \
    --database_path $DATASET_PATH/database.db
 
 exhaustive_matcher_time=`date +"%Y-%m-%d %H:%M:%S"`
