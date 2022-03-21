@@ -93,7 +93,7 @@ echo "---ReconstructMesh---"
 ReconstructMesh_time=`date +"%Y-%m-%d %H:%M:%S"`
 
 echo "---RefineMesh---"
-/usr/local/bin/OpenMVS/RefineMesh scene_dense_mesh.mvs --scales 1 --scale-step 1 --resolution-level 2
+/usr/local/bin/OpenMVS/RefineMesh scene_dense_mesh.mvs --scales 1 --scale-step 1 --resolution-level 2 --use-cuda 1
 
 RefineMesh_time=`date +"%Y-%m-%d %H:%M:%S"`
 
