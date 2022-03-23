@@ -30,7 +30,7 @@ colmap feature_extractor \
    --image_path $DATASET_PATH/colmap/images  \
    --ImageReader.camera_model PINHOLE   \
    --SiftExtraction.max_image_size 5200 \
-   --SiftExtraction.max_num_features $4 \  
+   --SiftExtraction.max_num_features $4 \
    --ImageReader.single_camera 1
 
 feature_extractor_time=`date +"%Y-%m-%d %H:%M:%S"`
