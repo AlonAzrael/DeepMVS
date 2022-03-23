@@ -30,6 +30,7 @@ colmap feature_extractor \
    --image_path $DATASET_PATH/colmap/images  \
    --ImageReader.camera_model PINHOLE   \
    --SiftExtraction.max_image_size 5200 \
+   --SiftExtraction.max_num_features $4 \  # TUNE
    --ImageReader.single_camera 1
 
 feature_extractor_time=`date +"%Y-%m-%d %H:%M:%S"`
@@ -46,6 +47,7 @@ echo "---mapper---"
 colmap mapper \
     --database_path $DATASET_PATH/database.db \
     --image_path $DATASET_PATH/colmap/images \
+    --Mapper.ba_global_images_ratio 1.5 --Mapper.ba_global_points_ratio 1.5 --Mapper.ba_global_max_num_iterations 8 --Mapper.ba_global_max_refinements 1 --Mapper.ba_global_points_freq 100000 \ # TUNE
     --output_path $DATASET_PATH/colmap/sparse 
 
 mapper_time=`date +"%Y-%m-%d %H:%M:%S"`
@@ -88,12 +90,12 @@ DensifyPointCloud_time=`date +"%Y-%m-%d %H:%M:%S"`
 
 echo "${DATASET_PATH##*/} 3">> process.txt
 echo "---ReconstructMesh---"
-/usr/local/bin/OpenMVS/ReconstructMesh ./scene_dense.mvs --smooth 5  --d 2 
+/usr/local/bin/OpenMVS/ReconstructMesh ./scene_dense.mvs --decimate 1 --smooth 0 --min-point-distance 2.5
 
 ReconstructMesh_time=`date +"%Y-%m-%d %H:%M:%S"`
 
 echo "---RefineMesh---"
-/usr/local/bin/OpenMVS/RefineMesh scene_dense_mesh.mvs --scales 1 --scale-step 1 --resolution-level 2 --use-cuda 1
+/usr/local/bin/OpenMVS/RefineMesh scene_dense_mesh.mvs --scales 1 --scale-step 1.0 --resolution-level 2 --use-cuda 1 --reduce-memory 0
 
 RefineMesh_time=`date +"%Y-%m-%d %H:%M:%S"`
 
@@ -109,15 +111,15 @@ mv scene_dense_mesh_refine_texture.mtl model
 mv scene_dense_mesh_refine_texture.obj model
 mv scene_dense_mesh_refine_texture_material* model
 
-/usr/local/bin/OpenMVS/TextureMesh scene_dense_mesh_refine.mvs --export-type obj --decimate 0.05 --cost-smoothness-ratio 5 
+# /usr/local/bin/OpenMVS/TextureMesh scene_dense_mesh_refine.mvs --export-type obj --decimate 0.05 --cost-smoothness-ratio 5 
 
 TextureMesh_small_time=`date +"%Y-%m-%d %H:%M:%S"`
 
 mkdir model_small
 
-mv scene_dense_mesh_refine_texture.mtl model_small
-mv scene_dense_mesh_refine_texture.obj model_small
-mv scene_dense_mesh_refine_texture_material* model_small
+# mv scene_dense_mesh_refine_texture.mtl model_small
+# mv scene_dense_mesh_refine_texture.obj model_small
+# mv scene_dense_mesh_refine_texture_material* model_small
 
 
 mkdir openmvs
