@@ -30,7 +30,7 @@ colmap feature_extractor \
    --image_path $DATASET_PATH/colmap/images  \
    --ImageReader.camera_model PINHOLE   \
    --SiftExtraction.max_image_size 5200 \
-   --SiftExtraction.max_num_features $4 \  # TUNE
+   --SiftExtraction.max_num_features $4 \  
    --ImageReader.single_camera 1
 
 feature_extractor_time=`date +"%Y-%m-%d %H:%M:%S"`
@@ -47,7 +47,7 @@ echo "---mapper---"
 colmap mapper \
     --database_path $DATASET_PATH/database.db \
     --image_path $DATASET_PATH/colmap/images \
-    --Mapper.ba_global_images_ratio 1.5 --Mapper.ba_global_points_ratio 1.5 --Mapper.ba_global_max_num_iterations 8 --Mapper.ba_global_max_refinements 1 --Mapper.ba_global_points_freq 100000 \ # TUNE
+    --Mapper.ba_global_images_ratio 1.5 --Mapper.ba_global_points_ratio 1.5 --Mapper.ba_global_max_num_iterations 8 --Mapper.ba_global_max_refinements 1 --Mapper.ba_global_points_freq 100000 \ 
     --output_path $DATASET_PATH/colmap/sparse 
 
 mapper_time=`date +"%Y-%m-%d %H:%M:%S"`
