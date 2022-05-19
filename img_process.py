@@ -9,7 +9,7 @@ import multiprocessing as mp
 def resize_img(inputs):
     i, path, image_resize_dir, img_scale = inputs
     #print('path:',path)
-    img = cv2.imread(path)
+    img = cv2.imread(path, cv2.IMREAD_UNCHANGED)
     h,w = img.shape[:2]
     max_h = 1300
     max_w = 1300
